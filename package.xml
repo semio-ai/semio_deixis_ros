@@ -1,0 +1,23 @@
+<package>
+  <name>semio_deixis_ros</name>
+  <version>0.1.0</version>
+
+  <description>The semio_deixis_ros package</description>
+
+  <maintainer email="support@semio.xyz">Semio Corp</maintainer>
+  <license>GPLv3</license>
+  <url type="website">https://semio.xyz</url>
+  <author email="support@semio.xyz">Semio Corp</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>roscpp</build_depend>
+  <build_depend>semio_msgs_ros</build_depend>
+  <build_depend>libnite2</build_depend>
+  <build_depend>libsemio</build_depend>
+
+  <run_depend>roscpp</run_depend>
+  <run_depend>semio_msgs_ros</run_depend>
+  <run_depend>libnite2</run_depend>
+  <run_depend>libsemio</run_depend>
+</package>
