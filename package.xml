@@ -13,11 +13,13 @@
 
   <build_depend>roscpp</build_depend>
   <build_depend>semio_msgs_ros</build_depend>
+  <build_depend>semio_humanoid_ros</build_depend>
   <build_depend>libnite2</build_depend>
   <build_depend>libsemio</build_depend>
 
   <run_depend>roscpp</run_depend>
   <run_depend>semio_msgs_ros</run_depend>
+  <run_depend>semio_humanoid_ros</run_depend>
   <run_depend>libnite2</run_depend>
   <run_depend>libsemio</run_depend>
 </package>
