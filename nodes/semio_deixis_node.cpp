@@ -1,12 +1,10 @@
-#include <iostream>
-
 #include <ros/ros.h>
 
 #include <semio_msgs_ros/DeicticRecognitionResult.h>
 #include <semio_msgs_ros/DeicticTargets.h>
 
 #include <semio/recognition/deictic_recognizer.h>
-#include <semio/recognition/humanoid_source_NiTE.h>
+#include <semio/ros/humanoid_source_adapter.h>
 
 class SemioDeixisNode
 {
@@ -22,14 +20,15 @@ public:
     ros::Publisher result_pub_;
     ros::Subscriber targets_sub_;
 
+    semio::HumanoidSource::Ptr humanoid_source_ptr_;
     semio::DeicticRecognizer deictic_recognizer_;
-    semio::HumanoidSourceNiTE humanoid_source_;
 
-    SemioDeixisNode( ros::NodeHandle & nh_rel )
+    SemioDeixisNode( ros::NodeHandle & nh_rel, semio::HumanoidSource::Ptr humanoid_source_ptr )
     :
         nh_rel_( nh_rel ),
         result_pub_( nh_rel_.advertise<_DeicticRecognitionResultMsg>( "result", 10 ) ),
-        targets_sub_( nh_rel_.subscribe( "targets", 10, &SemioDeixisNode::targetsCB, this ) )
+        targets_sub_( nh_rel_.subscribe( "targets", 10, &SemioDeixisNode::targetsCB, this ) ),
+        humanoid_source_ptr_( humanoid_source_ptr )
     {
         //
     }
@@ -40,7 +39,7 @@ public:
 
         while( ros::ok() )
         {
-            deictic_recognizer_.getHumanoids() = humanoid_source_.update();
+            deictic_recognizer_.getHumanoids() = humanoid_source_ptr_->update();
             semio::DeicticRecognitionResult const & result( deictic_recognizer_.calculateResult() );
 
             _DeicticRecognitionResultMsg result_msg;
@@ -107,7 +106,9 @@ int main( int argc, char ** argv )
     ros::init( argc, argv, "semio_deixis_node" );
     ros::NodeHandle nh_rel( "~" );
 
-    SemioDeixisNode semio_deixis_node( nh_rel );
+    semio::ros::HumanoidSourceAdapter humanoid_source_adapter( nh_rel );
+
+    SemioDeixisNode semio_deixis_node( nh_rel, humanoid_source_adapter.getHumanoidSource() );
     semio_deixis_node.spin();
 
     return 0;
