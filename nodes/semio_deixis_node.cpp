@@ -39,6 +39,8 @@ public:
 
         while( ros::ok() )
         {
+            ros::spinOnce();
+
             deictic_recognizer_.getHumanoids() = humanoid_source_ptr_->update();
             semio::DeicticRecognitionResult const & result( deictic_recognizer_.calculateResult() );
 
