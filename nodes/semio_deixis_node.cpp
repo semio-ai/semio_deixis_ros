@@ -96,7 +96,7 @@ public:
             auto const & name = target_msg.name;
             auto const & position = target_msg.position;
 
-            deictic_targets.emplace( name, Eigen::Translation3d( position.x, position.y, position.z ) );
+            deictic_targets.emplace( name, Eigen::Vector3d( position.x, position.y, position.z ) );
         }
 
         deictic_recognizer_.getTargets() = deictic_targets;
