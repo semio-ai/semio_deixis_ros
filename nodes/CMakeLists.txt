@@ -1,4 +1,6 @@
-set(nodes semio_deixis_node)
+set(nodes
+  semio_deixis_node
+  example_deictic_targets_node)
 
 add_definitions( -std=c++11 )
 foreach(node ${nodes})
