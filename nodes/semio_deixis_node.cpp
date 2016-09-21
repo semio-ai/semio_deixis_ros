@@ -26,7 +26,7 @@ public:
     SemioDeixisNode( ros::NodeHandle & nh_rel, semio::HumanoidSource::Ptr humanoid_source_ptr )
     :
         nh_rel_( nh_rel ),
-        result_pub_( nh_rel_.advertise<_DeicticRecognitionResultMsg>( "result", 10 ) ),
+        result_pub_( nh_rel_.advertise<_DeicticRecognitionResultMsg>( "result", 100 ) ),
         targets_sub_( nh_rel_.subscribe( "targets", 10, &SemioDeixisNode::targetsCB, this ) ),
         humanoid_source_ptr_( humanoid_source_ptr )
     {
