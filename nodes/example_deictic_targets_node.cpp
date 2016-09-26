@@ -45,8 +45,8 @@ public:
     {
         size_t const cols( _nh_rel.param<int>( "cols", 13 ) );
         size_t const rows( _nh_rel.param<int>( "rows", 7 ) );
-        double const horizontal_spacing( _nh_rel.param<double>( "h_spacing", 5 ) );
-        double const vertical_spacing( _nh_rel.param<double>( "v_spacing", 5 ) );
+        double const horizontal_spacing( _nh_rel.param<double>( "h_spacing", 15 ) );
+        double const vertical_spacing( _nh_rel.param<double>( "v_spacing", 15 ) );
         double const radius( _nh_rel.param<double>( "radius", 2 ) );
 
         std::cout << "using " << cols << "x" << rows << " @ " << horizontal_spacing << "x" << vertical_spacing << std::endl;
