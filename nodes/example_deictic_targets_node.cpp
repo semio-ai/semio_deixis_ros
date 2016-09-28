@@ -3,6 +3,7 @@
 #include <semio_msgs_ros/Humanoids.h>
 #include <semio/recognition/deictic_recognizer.h>
 #include <semio/ros/humanoid_source_adapter.h>
+#include <semio/ros/humanoid_sink_adapter.h>
 #include <semio/recognition/humanoid_source_virtual.h>
 
 struct TestPose
@@ -24,8 +25,8 @@ protected:
 
     ros::NodeHandle & _nh_rel;
     ros::Publisher _deictic_targets_pub;
-    ros::Publisher _humanoids_pub;
 
+    semio::HumanoidSink::Ptr _humanoid_sink_ptr;
     semio::HumanoidSource::Ptr _humanoid_source_ptr;
 
     bool _is_virtual_source;
@@ -35,12 +36,12 @@ protected:
     std::vector<TestPose> _test_poses;
 
 public:
-    ExampleDeicticTargetsNode( ros::NodeHandle & nh_rel, semio::HumanoidSource::Ptr humanoid_source_ptr )
+    ExampleDeicticTargetsNode( ros::NodeHandle & nh_rel, semio::HumanoidSource::Ptr humanoid_source_ptr, semio::HumanoidSink::Ptr humanoid_sink_ptr )
     :
         _nh_rel( nh_rel ),
         _deictic_targets_pub( nh_rel.advertise<_DeicticTargetsMsg>( "deictic_targets", 10 ) ),
-        _humanoids_pub( nh_rel.advertise<_HumanoidsMsg>( "humanoids", 10 ) ),
         _humanoid_source_ptr( humanoid_source_ptr ),
+        _humanoid_sink_ptr( humanoid_sink_ptr ),
         _is_virtual_source( std::dynamic_pointer_cast<semio::HumanoidSourceVirtual>( _humanoid_source_ptr ) )
     {
         size_t const cols( _nh_rel.param<int>( "cols", 13 ) );
@@ -108,47 +109,8 @@ public:
 
     void publishData()
     {
-        // get humanoids
-        semio::HumanoidArray const & humanoids( _humanoid_source_ptr->update() );
-
         // publish humanoids
-        _HumanoidsMsg humanoids_msg;
-
-        humanoids_msg.humanoids.reserve( humanoids.size() );
-
-        for( auto const & humanoid : humanoids )
-        {
-            auto & joints( humanoid.joints_ );
-
-            _HumanoidMsg humanoid_msg;
-
-            humanoid_msg.id = humanoid.id_;
-            humanoid_msg.tracking_state = static_cast<uint32_t>( humanoid.tracking_state_ );
-            humanoid_msg.joints.reserve( joints.size() );
-
-            for( auto const & joint_item : joints )
-            {
-                semio::HumanoidJoint const & joint( joint_item.second );
-
-                _HumanoidJointMsg joint_msg;
-
-                joint_msg.type = static_cast<size_t>( joint.joint_type_ );
-                joint_msg.position_confidence = joint.position_confidence_;
-                joint_msg.orientation_confidence = joint.orientation_confidence_;
-                joint_msg.position.x = joint.position_.x();
-                joint_msg.position.y = joint.position_.y();
-                joint_msg.position.z = joint.position_.z();
-                joint_msg.orientation.w = joint.orientation_.w();
-                joint_msg.orientation.x = joint.orientation_.x();
-                joint_msg.orientation.y = joint.orientation_.y();
-                joint_msg.orientation.z = joint.orientation_.z();
-
-                humanoid_msg.joints.push_back( std::move( joint_msg ) );
-            }
-            humanoids_msg.humanoids.push_back( std::move( humanoid_msg ) );
-        }
-
-        _humanoids_pub.publish( std::move( humanoids_msg ) );
+        _humanoid_sink_ptr->publish( _humanoid_source_ptr->update() );
 
         // publish deictic targets
         _DeicticTargetsMsg deictic_targets_msg;
@@ -231,8 +193,9 @@ int main( int argc, char ** argv )
     ros::NodeHandle nh_rel( "~" );
 
     semio::ros::HumanoidSourceAdapter humanoid_source_adapter( nh_rel, "virtual" );
+    semio::ros::HumanoidSinkAdapter humanoid_sink_adapter( nh_rel, "ros" );
 
-    ExampleDeicticTargetsNode example_deictic_targets_node( nh_rel, humanoid_source_adapter.getHumanoidSource() );
+    ExampleDeicticTargetsNode example_deictic_targets_node( nh_rel, humanoid_source_adapter.getHumanoidSource(), humanoid_sink_adapter.getHumanoidSink() );
     example_deictic_targets_node.spin();
 
     return 0;
