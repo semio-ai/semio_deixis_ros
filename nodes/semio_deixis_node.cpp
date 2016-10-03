@@ -35,8 +35,8 @@ public:
             humanoid_source_ptr_->getFilter().addFilters( semio::HumanoidFilter::getStandardFilterHumanoidJoint( semio::HumanoidJoint::JointType::HEAD ) );
             humanoid_source_ptr_->getFilter().addFilter( semio::HumanoidFilter::_FilterFunc( []( semio::Humanoid const & humanoid )->bool{
                 return (
-                    humanoid.getJoint( semio::HumanoidJoint::JointType::LEFT_HAND ).isTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) ||
-                    humanoid.getJoint( semio::HumanoidJoint::JointType::RIGHT_HAND ).isTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) );
+                    humanoid.getJoint( semio::HumanoidJoint::JointType::LEFT_HAND ).isPositionTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) ||
+                    humanoid.getJoint( semio::HumanoidJoint::JointType::RIGHT_HAND ).isPositionTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) );
             } ) );
         }
     }
