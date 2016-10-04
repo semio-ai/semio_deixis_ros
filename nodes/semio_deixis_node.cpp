@@ -30,19 +30,7 @@ public:
         targets_sub_( nh_rel_.subscribe( "targets", 10, &SemioDeixisNode::targetsCB, this ) ),
         humanoid_source_ptr_( humanoid_source_ptr )
     {
-        if( nh_rel.param<bool>( std::string( "filter_humanoids" ), true ) )
-        {
-            humanoid_source_ptr_->getFilter().addFilters( semio::HumanoidFilter::getStandardFilterHumanoidTrackingState() );
-            humanoid_source_ptr_->getFilter().addFilter( semio::HumanoidFilter::_FilterFunc( []( semio::Humanoid const & humanoid )->bool{
-                return ( (
-                        humanoid.getJoint( semio::HumanoidJoint::JointType::LEFT_HAND ).isPositionTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) &&
-                        humanoid.getJoint( semio::HumanoidJoint::JointType::LEFT_ELBOW ).isPositionTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) &&
-                        humanoid.getJoint( semio::HumanoidJoint::JointType::LEFT_SHOULDER ).isPositionTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) ) || (
-                        humanoid.getJoint( semio::HumanoidJoint::JointType::RIGHT_HAND ).isPositionTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) &&
-                        humanoid.getJoint( semio::HumanoidJoint::JointType::RIGHT_ELBOW ).isPositionTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) &&
-                        humanoid.getJoint( semio::HumanoidJoint::JointType::RIGHT_SHOULDER ).isPositionTracked( semio::HumanoidJoint::CONFIDENCE_LOW ) ) );
-            } ) );
-        }
+        //
     }
 
     void spin()
