@@ -30,7 +30,21 @@ public:
         targets_sub_( nh_rel_.subscribe( "targets", 10, &SemioDeixisNode::targetsCB, this ) ),
         humanoid_source_ptr_( humanoid_source_ptr )
     {
-        //
+        typedef std::function<void(std::string const &)> _ParamFunc;
+        typedef std::pair<std::string, _ParamFunc> _ParamOp;
+        for( auto const & param_op : {
+            _ParamOp(
+                "filter/max_size",
+                [this]( std::string const & param_name ){
+                    this->deictic_recognizer_.setFilterMaxSize( this->nh_rel_.param<int>( std::string( param_name ), 0 ) );
+                } ),
+            _ParamOp( "filter/max_duration",
+                [this]( std::string const & param_name ){
+                    this->deictic_recognizer_.setFilterMaxDuration( this->nh_rel_.param<double>( std::string( param_name ), 0 ) );
+                } ) } )
+        {
+            if( nh_rel_.hasParam( param_op.first ) ) param_op.second( param_op.first );
+        }
     }
 
     void spin()
