@@ -81,8 +81,8 @@ public:
                     for( auto const & list_item : top_n_list )
                     {
                         _DeicticRecognitionTopNItemMsg top_n_item_msg;
-                        top_n_item_msg.likelihood = list_item.value_;
-                        top_n_item_msg.target_name = list_item.data_;
+                        top_n_item_msg.likelihood = list_item.getValue();
+                        top_n_item_msg.target_name = list_item.getData();
 
                         source_msg.top_n_list.push_back( std::move( top_n_item_msg ) );
                     }
