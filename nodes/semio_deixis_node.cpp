@@ -78,7 +78,7 @@ public:
                     source_msg.name = source_item.first;
                     source_msg.top_n_list.reserve( top_n_list.size() );
 
-                    for( auto const & list_item : top_n_list )
+                    for( auto const & list_item : top_n_list.values() )
                     {
                         _DeicticRecognitionTopNItemMsg top_n_item_msg;
                         top_n_item_msg.likelihood = list_item.getValue();
