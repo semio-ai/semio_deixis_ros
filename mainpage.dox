@@ -1,0 +1,82 @@
+/**
+
+@if STANDALONE_DOC
+@mainpage semio_deixis_ros
+@endif
+
+@if (!STANDALONE_DOC)
+@page semio_deixis_ros semio_deixis_ros
+@endif
+
+@section deixis-overview Overview
+
+ROS interface for Semio deixis software.
+
+---
+
+@section deixis-nodes Nodes
+- @ref deixis-semio_deixis_node
+- @ref deixis-example_deictic_targets_node
+
+
+---
+@subsection deixis-semio_deixis_node semio_deixis_node
+
+@subsubsection deixis-semio_deixis_node-source C++ API
+- @ref SemioDeixisNode
+
+@subsubsection deixis-semio_deixis_node-params Params
+<table>
+<tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr>
+<tr><td>@b `_filter/max_size`</td><td>`int32`</td><td>`undefined`</td><td>Deixis temporal filter max queue size (time-points)</td></tr>
+<tr><td>@b `_filter/max_duration`</td><td>`float64`</td><td>`undefined`</td><td>Deixis temporal filter max queue duration (seconds)</td></tr>
+</table>
+- Any created by:
+  - semio::ros::HumanoidSourceAdapter
+  - semio::ros::HumanoidSinkAdapter
+
+@subsubsection deixis-semio_deixis_node-topics Topics
+<table>
+<tr><th>Topic</th><th>Type</th><th>Description</th></tr>
+<tr><td colspan="3" align="center">@b Subscriptions</td></tr>
+<tr><td>@b `~targets`</td><td>@ref semio_msgs_ros<a href=DeicticTargets_8msg_source.html><b>/DeicticTargets</b></a></td><td>Targets that humanoids can point to</td></tr>
+<tr><td colspan="3" align="center">@b Publications</td></tr>
+<tr><td>@b `~result`</td><td>@ref semio_msgs_ros<a href=DeicticRecognitionResult_8msg_source.html><b>/DeicticRecognitionResult</b></a></td><td>Result from semio::DeicticRecognizer</td></tr>
+</table>
+- Any created by:
+  - semio::ros::HumanoidSourceAdapter
+  - semio::ros::HumanoidSinkAdapter
+
+
+---
+@subsection deixis-example_deictic_targets_node example_deictic_targets_node
+
+@subsubsection deixis-example_deictic_targets_node-source C++ API
+- @ref ExampleDeicticTargetsNode
+
+@subsubsection deixis-example_deictic_targets_node-params Params
+<table>
+<tr><th>Name</th><th>Type</th><th>Default</th><th>Description</th></tr>
+<tr><td>@b `_cols`</td><td>`int32`</td><td>`13`</td><td>Number of spherical "columns" of targets to create</td></tr>
+<tr><td>@b `_rows`</td><td>`int32`</td><td>`7`</td><td>Number of spherical "rows" of targets to create</td></tr>
+<tr><td>@b `_hspacing`</td><td>`float64`</td><td>`15.0`</td><td>Horizontal angular separation between targets, degrees</td></tr>
+<tr><td>@b `_vspacing`</td><td>`float64`</td><td>`15.0`</td><td>Vertical angular separation between targets, degrees</td></tr>
+<tr><td>@b `_radius`</td><td>`float64`</td><td>`2.0`</td><td>Radius of spherical grid, meters</td></tr>
+</table>
+- Any created by:
+  - semio::ros::HumanoidSourceAdapter
+  - semio::ros::HumanoidSinkAdapter
+
+@subsubsection deixis-example_deictic_targets_node-topics Topics
+<table>
+<tr><th>Topic</th><th>Type</th><th>Description</th></tr>
+<tr><td colspan="3" align="center">@b Publications</td></tr>
+<tr><td>@b `~targets`</td><td>@ref semio_msgs_ros<a href=DeicticTargets_8msg_source.html><b>/DeicticTargets</b></a></td><td>Targets that humanoids can point to</td></tr>
+</table>
+- Any created by:
+  - semio::ros::HumanoidSourceAdapter
+  - semio::ros::HumanoidSinkAdapter
+
+@tableofcontents
+
+**/
